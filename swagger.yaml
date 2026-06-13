@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: Bookstore API
+  version: 1.0.0
+  description: A simple API to manage books and orders
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /books:
+    get:
+      summary: Get all books
+      parameters:
+        - name: genre
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of books returned successfully
+        '400':
+          description: Invalid query parameter
+
+    post:
+      summary: Add a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, author, price]
+              properties:
+                title:
+                  type: string
+                author:
+                  type: string
+                price:
+                  type: number
+                genre:
+                  type: string
+      responses:
+        '201':
+          description: Book created successfully
+        '400':
+          description: Missing required fields
+
+  /books/{id}:
+    get:
+      summary: Get a single book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book found
+        '404':
+          description: Book not found
+
+    delete:
+      summary: Delete a book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book deleted
+        '404':
+          description: Book not found
